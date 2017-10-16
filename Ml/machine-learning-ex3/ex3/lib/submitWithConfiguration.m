@@ -32,7 +32,7 @@ function submitWithConfiguration(conf)
   if isfield(response, 'errorMessage')
     fprintf('!! Submission failed: %s\n', response.errorMessage);
   elseif isfield(response, 'errorCode')
-    fprintf('!! Submission failed: %s\n', response.message);
+    fprintf('!! Submission failed: %s\n', response.errorCode);
   else
     showFeedback(parts, response);
     save(tokenFile, 'email', 'token');

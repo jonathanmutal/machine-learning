@@ -3,13 +3,25 @@ function p = predict(Theta1, Theta2, X)
 %   p = PREDICT(Theta1, Theta2, X) outputs the predicted label of X given the
 %   trained weights of a neural network (Theta1, Theta2)
 
-% Useful values
-m = size(X, 1);
-num_labels = size(Theta2, 1);
+    % Useful values
+    m = size(X, 1);
+    num_labels = size(Theta2, 1);
 
-% You need to return the following variables correctly 
-p = zeros(size(X, 1), 1);
+    X = [ones(m, 1) X];
+    % You need to return the following variables correctly 
+    p = zeros(m, 1);
 
+    a = X;
+
+    z_2 = a * Theta1';
+    a = sigmoid(z_2);
+
+    a = [ones(m, 1) a];
+    z_3 = a * Theta2';
+    a = sigmoid(z_3);
+
+    [maximun, p] = max(a, [], 2);
+end
 % ====================== YOUR CODE HERE ======================
 % Instructions: Complete the following code to make predictions using
 %               your learned neural network. You should set p to a 
@@ -20,16 +32,4 @@ p = zeros(size(X, 1), 1);
 %       information see 'help max'. If your examples are in rows, then, you
 %       can use max(A, [], 2) to obtain the max for each row.
 %
-
-
-
-
-
-
-
-
-
 % =========================================================================
-
-
-end
