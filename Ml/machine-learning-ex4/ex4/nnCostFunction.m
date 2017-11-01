@@ -30,6 +30,44 @@ J = 0;
 Theta1_grad = zeros(size(Theta1));
 Theta2_grad = zeros(size(Theta2));
 
+
+%%%%%%% PART 1 %%%%%%%%
+
+h1 = sigmoid([ones(m, 1) X] * Theta1');
+a3 = sigmoid([ones(m, 1) h1] * Theta2');
+
+y_modify = diag(ones(num_labels, 1), num_labels, num_labels);
+y_modify = y_modify(y, :);
+
+regul_term = (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2))) * lambda / (2 * m);
+J = sum(sum(-y_modify .* log(a3) - (1 - y_modify) .* log(1 - a3)))/m + regul_term;
+
+D = zeros(hidden_layer_size);
+for t = 1:m
+    %% Forward propagaton 1 %%
+    x_t = X(t, :);
+    y_t = y_modify(t, :);
+    a_1 = [1 x_t];
+
+    z_2 = a_1 * Theta1';
+    a_2 = sigmoid(z_2);
+
+    a_2 = [1 a_2];
+    z_3 = a_2 * Theta2';
+    a_3 = sigmoid(z_3);
+
+    delta_3 = a_3 - y_t;
+    delta_2 = delta_3 * Theta2 .* [1 sigmoidGradient(z_2)];
+    delta_2 = delta_2(:, 2:end);
+
+    Theta1_grad = Theta1_grad + delta_2' * a_1;
+    Theta2_grad = Theta2_grad + delta_3' * a_2;
+
+end
+
+Theta1_grad = Theta1_grad/m + [zeros(size(Theta1, 1), 1) (lambda * Theta1(:, 2:end))/m];
+Theta2_grad = Theta2_grad/m + [zeros(size(Theta2, 1), 1) (lambda * Theta2(:, 2:end))/m];
+
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the code by working through the
 %               following parts.
@@ -61,24 +99,6 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 % -------------------------------------------------------------
 
