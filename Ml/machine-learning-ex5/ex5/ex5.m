@@ -92,7 +92,6 @@ ylabel('Water flowing out of the dam (y)');
 hold on;
 plot(X, [ones(m, 1) X]*theta, '--', 'LineWidth', 2)
 hold off;
-
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
@@ -164,18 +163,20 @@ pause;
 %  lambda to see how the fit and learning curve change.
 %
 
-lambda = 0;
+lambda = 3;
 [theta] = trainLinearReg(X_poly, y, lambda);
 
 % Plot training data and fit
-figure(1);
 plot(X, y, 'rx', 'MarkerSize', 10, 'LineWidth', 1.5);
 plotFit(min(X), max(X), mu, sigma, theta, p);
 xlabel('Change in water level (x)');
 ylabel('Water flowing out of the dam (y)');
 title (sprintf('Polynomial Regression Fit (lambda = %f)', lambda));
 
-figure(2);
+fprintf('Program paused. Press enter to continue.\n');
+pause;
+
+
 [error_train, error_val] = ...
     learningCurve(X_poly, y, X_poly_val, yval, lambda);
 plot(1:m, error_train, 1:m, error_val);
@@ -212,9 +213,11 @@ ylabel('Error');
 
 fprintf('lambda\t\tTrain Error\tValidation Error\n');
 for i = 1:length(lambda_vec)
-	fprintf(' %f\t%f\t%f\n', ...
+    fprintf(' %f\t%f\t%f\n', ...
             lambda_vec(i), error_train(i), error_val(i));
 end
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
+
+close all;
