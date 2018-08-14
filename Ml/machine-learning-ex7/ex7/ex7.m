@@ -107,7 +107,6 @@ fprintf('\nRunning K-Means clustering on pixels from an image.\n\n');
 
 %  Load an image of a bird
 A = double(imread('bird_small.png'));
-
 % If imread does not work for you, you can try instead
 %   load ('bird_small.mat');
 
@@ -154,6 +153,7 @@ idx = findClosestCentroids(X, centroids);
 % We can now recover the image from the indices (idx) by mapping each pixel
 % (specified by its index in idx) to the centroid value
 X_recovered = centroids(idx,:);
+% X_recovered
 
 % Reshape the recovered image into proper dimensions
 X_recovered = reshape(X_recovered, img_size(1), img_size(2), 3);
